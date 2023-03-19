@@ -24,13 +24,14 @@ ext {
     gson = "2.10.1"
     extentreports = "5.0.9"
     poi = "5.2.3"
+    groovy = "4.0.9"
     ownerVersion = "1.0.12"
 }
 
 dependencies {
     implementation(
             "org.hamcrest:hamcrest:2.2",
-            "org.codehaus.groovy:groovy:3.0.14",
+            "org.apache.groovy:groovy:${groovy}",
             "com.fasterxml.jackson.core:jackson-databind:${jackson}",
             "com.fasterxml.jackson.core:jackson-core:${jackson}",
             "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jackson}",
@@ -52,7 +53,8 @@ dependencies {
     )
     testImplementation(
             "org.assertj:assertj-core:${assertj}",
-            "com.github.tomakehurst:wiremock-jre8-standalone:${wiremock}",
+            "org.testng:testng:${testng}",
+            "com.github.tomakehurst:wiremock-standalone:${wiremock}",
             "uk.co.jemos.podam:podam:${podam}",
     )
 }

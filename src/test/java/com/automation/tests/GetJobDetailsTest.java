@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static com.automation.enums.Authors.USER_1;
+import static com.automation.enums.Authors.JOJO;
 import static com.automation.enums.CategoryType.SMOKE;
 import static com.automation.models.builders.RequestBuilder.createRequestSpecification;
 import static com.automation.models.builders.ResponseBuilder.createResponseSpecification;
@@ -23,7 +23,7 @@ import static org.hamcrest.Matchers.hasItem;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class GetJobDetailsTest {
 
-  @FrameworkAnnotation(author = USER_1, category = {SMOKE})
+  @FrameworkAnnotation(author = JOJO, category = {SMOKE})
   @Test(description = "Validate the status code for GET request")
   public void getRequestToValidateStatusCode() {
     RequestSpecification requestSpecification = createRequestSpecification();
@@ -43,7 +43,7 @@ public final class GetJobDetailsTest {
     response.then().assertThat().statusCode(200);
   }
 
-  @FrameworkAnnotation(author = USER_1, category = {SMOKE})
+  @FrameworkAnnotation(author = JOJO, category = {SMOKE})
   @Test(description = "Validate the JSON response body for GET request")
   public void getRequestToValidateJsonResponseBody() {
     Response response = given().
@@ -63,7 +63,7 @@ public final class GetJobDetailsTest {
                                       "[0].jobId", equalTo(1));
   }
 
-  @FrameworkAnnotation(author = USER_1, category = {SMOKE})
+  @FrameworkAnnotation(author = JOJO, category = {SMOKE})
   @Test(description = "Validate the XML response body for GET request")
   public void getRequestToValidateXmlResponseBody() {
     Response response = given().
@@ -82,7 +82,7 @@ public final class GetJobDetailsTest {
                                       "List.item.jobId", equalTo("1"));
   }
 
-  @FrameworkAnnotation(author = USER_1, category = {SMOKE})
+  @FrameworkAnnotation(author = JOJO, category = {SMOKE})
   @Test(description = "Validate the JSON response body using Json Path for GET request")
   public void getRequestToValidateResponseBodyUsingJsonPath() {
     Response response = given().
@@ -102,7 +102,7 @@ public final class GetJobDetailsTest {
     Assert.assertEquals(jobTitle, "Software Engg");
   }
 
-  @FrameworkAnnotation(author = USER_1, category = {SMOKE})
+  @FrameworkAnnotation(author = JOJO, category = {SMOKE})
   @Test(description = "Validate the JSON response header for GET request")
   public void getRequestToValidateJsonResponseHeader() {
     Response response = given().
@@ -120,7 +120,7 @@ public final class GetJobDetailsTest {
   }
 
 
-  @FrameworkAnnotation(author = USER_1, category = {SMOKE})
+  @FrameworkAnnotation(author = JOJO, category = {SMOKE})
   @Test(description = "Validate the status line for GET request")
   public void getRequestToValidateStatusLine() {
     Response response = given().
