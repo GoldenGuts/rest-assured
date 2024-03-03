@@ -3,47 +3,55 @@ package com.automation.listeners;
 import com.automation.annotations.FrameworkAnnotation;
 import com.automation.reports.ExtentLogger;
 import com.automation.reports.ExtentReport;
-import org.testng.ISuite;
-import org.testng.ISuiteListener;
-import org.testng.ITestListener;
-import org.testng.ITestResult;
+import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.extension.AfterAllCallback;
+import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
-public class Listeners implements ITestListener, ISuiteListener {
+public class Listeners implements BeforeAllCallback, AfterAllCallback, BeforeTestExecutionCallback, AfterTestExecutionCallback {
 
   private static final String MESSAGE = "Test - <b>";
 
   @Override
-  public void onStart(ISuite suite) {
+  public void beforeAll(ExtensionContext context) throws Exception {
+    System.out.println("I AM BEING EXECUTED");
     ExtentReport.initExtentReport();
   }
 
   @Override
-  public void onFinish(ISuite suite) {
+  public void afterAll(ExtensionContext context) throws Exception {
     ExtentReport.flushExtentReport();
   }
 
   @Override
-  public void onTestStart(ITestResult result) {
-    ExtentReport.createTest(result.getMethod().getMethodName());
-    ExtentLogger.addAuthors(result.getMethod().getConstructorOrMethod().getMethod().getAnnotation(FrameworkAnnotation.class)
-                              .author());
-    ExtentLogger.addCategories(result.getMethod().getConstructorOrMethod().getMethod().getAnnotation(FrameworkAnnotation.class)
-                                 .category());
-    ExtentLogger.pass(MESSAGE + result.getMethod().getMethodName() + "</b>  is started");
+  public void beforeTestExecution(ExtensionContext context) throws Exception {
+    String methodName = context.getRequiredTestMethod().getName();
+    ExtentReport.createTest(methodName);
+
+    // Access annotations using reflection
+    FrameworkAnnotation annotation = context.getRequiredTestMethod().getAnnotation(FrameworkAnnotation.class);
+    if (annotation != null) {
+      ExtentLogger.addAuthors(annotation.author());
+      ExtentLogger.addCategories(annotation.category());
+    } else {
+      System.out.println("Author and category annotations are not present for this test method.");
+      // If desired, log a message to the Extent report as well
+    }
+    ExtentLogger.pass(MESSAGE + methodName + "</b> is started");
   }
 
   @Override
-  public void onTestSuccess(ITestResult result) {
-    ExtentLogger.pass(MESSAGE + result.getMethod().getMethodName() + "</b> is passed");
-  }
+  public void afterTestExecution(ExtensionContext context) throws Exception {
+    String methodName = context.getRequiredTestMethod().getName();
+    ExtensionContext.Store store = context.getStore(ExtensionContext.Namespace.create(getClass(), methodName));
+    boolean testResult = context.getExecutionException().isPresent();
 
-  @Override
-  public void onTestFailure(ITestResult result) {
-    ExtentLogger.fail(MESSAGE + result.getMethod().getMethodName() + "</b> is failed", result.getThrowable());
-  }
-
-  @Override
-  public void onTestSkipped(ITestResult result) {
-    ExtentLogger.skip(MESSAGE + result.getMethod().getMethodName() + "</b> is skipped");
+    if (!testResult) {
+      ExtentLogger.pass(MESSAGE + methodName + "</b> is passed");
+    } else {
+      ExtentLogger.fail(MESSAGE + methodName + "</b> is failed", context.getExecutionException().get());
+    }
   }
 }

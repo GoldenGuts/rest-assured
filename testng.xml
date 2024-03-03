@@ -6,8 +6,8 @@
     </listeners>
     <test thread-count="5" name="Test">
         <classes>
-            <class name = "com.automation.tests.GetJobDetailsTest"/>
-            <!--			<class name = "com.automation.tests.PostJobDetailsTest"/>-->
+            <class name = "com.automation.tests.FirstTest"/>
+            <!--			<class name = "com.automation.tests.MockedTest"/>-->
             <!--			<class name = "com.automation.tests.PutRequestToUpdateJobDetailsTest"/>-->
             <!--			<class name = "com.automation.tests.DeleteParticularJobIdTest"/>-->
             <!--			<class name = "com.automation.tests.GetRequestWithQueryParamsTest"/>-->
